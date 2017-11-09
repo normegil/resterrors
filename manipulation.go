@@ -24,7 +24,7 @@ func stacks(err error) []errors.StackTrace {
 	return stacktraces
 }
 
-func getErrWithCode(e error) ErrWithCode {
+func getErrWithCode(e error, defaultCode int) ErrWithCode {
 	found := SearchThroughCauses(e, func(e error) bool {
 		_, isErrWithCode := e.(ErrWithCode)
 		return isErrWithCode
@@ -34,7 +34,7 @@ func getErrWithCode(e error) ErrWithCode {
 		return found.(ErrWithCode)
 	}
 
-	return NewErrWithCode(DEFAULT_CODE, e)
+	return NewErrWithCode(defaultCode, e)
 }
 
 func SearchThroughCauses(e error, isSearched func(error) bool) error {

@@ -4,22 +4,18 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"net/url"
-	"time"
 
-	errorFormat "github.com/normegil/formats/error"
-	timeFormat "github.com/normegil/formats/time"
-	urlFormat "github.com/normegil/formats/url"
+	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
 )
 
-const DEFAULT_CODE = 500
-
 type Handler struct {
-	Log logrus.FieldLogger
+	Log         logrus.FieldLogger
+	Definitions []ErrorDefinition
+	DefaultCode int
 }
 
-func (h Handler) Handle(w http.ResponseWriter, e error) {
+func (h Handler) Handle(w http.ResponseWriter, e error) error {
 	log := h.Log
 	stacks := stacks(e)
 	if len(stacks) > 0 {
@@ -27,48 +23,29 @@ func (h Handler) Handle(w http.ResponseWriter, e error) {
 	}
 	log.WithError(e).Error("Error while processing request")
 
-	responseBody := toResponse(e)
+	responseBody, err := h.ToResponse(e)
+	if err != nil {
+		return err
+	}
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(responseBody.HTTPStatus)
 	responseBodyJSON, err := json.Marshal(responseBody)
 	if nil != err {
-		h.Log.WithError(err).Error("An error happened while trying to marshall an other error")
-		return
+		return err
 	}
 	log.WithField("headers", w.Header()).Debug("Headers of error response")
 	fmt.Fprintf(w, string(responseBodyJSON))
+	return nil
 }
 
-func toResponse(e error) *ErrorResponse {
-	eWithCode := getErrWithCode(e)
-	eMarshallable, isMarshable := e.(marshableError)
-	if !isMarshable {
-		eMarshallable = errorFormat.Error{e.Error()}
-	}
+func (h Handler) ToResponse(e error) (*ErrorResponse, error) {
+	eWithCode := getErrWithCode(e, h.DefaultCode)
 
-	for _, defResp := range predefinedErrors {
-		if eWithCode.Code() == defResp.Code {
-			return &ErrorResponse{
-				Code:       defResp.Code,
-				HTTPStatus: defResp.HTTPStatus,
-				Message:    defResp.Message,
-				MoreInfo:   defResp.MoreInfo,
-				Time:       timeFormat.Time(time.Now()),
-				Err:        eMarshallable,
-			}
+	for _, definition := range h.Definitions {
+		if eWithCode.Code() == definition.Code {
+			return definition.ToResponse(e)
 		}
 	}
 
-	moreInfo, err := url.Parse("http://example.com/5000")
-	if nil != err {
-		panic(err)
-	}
-	return &ErrorResponse{
-		Code:       50000,
-		HTTPStatus: 500,
-		Err:        errorFormat.Error{e.Error()},
-		MoreInfo:   urlFormat.URL{moreInfo},
-		Time:       timeFormat.Time(time.Now()),
-		Message:    "Error was not found in the error ressources. Generated a default error.",
-	}
+	return nil, errors.Wrapf(e, "Could not find default error definition: the handler need to have both the default definition and default code")
 }
