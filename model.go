@@ -52,11 +52,12 @@ func (d ErrorDefinition) ToResponse(err error) (*ErrorResponse, error) {
 	}
 	moreInfo := urlFormat.URL{moreInfoURL}
 	return &ErrorResponse{
-		Code:     d.Code,
-		Message:  d.Message,
-		MoreInfo: moreInfo,
-		Time:     timeFormat.Time(time.Now()),
-		Err:      eMarshallable,
+		HTTPStatus: d.HTTPStatus,
+		Code:       d.Code,
+		Message:    d.Message,
+		MoreInfo:   moreInfo,
+		Time:       timeFormat.Time(time.Now()),
+		Err:        eMarshallable,
 	}, nil
 }
 
