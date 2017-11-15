@@ -6,23 +6,14 @@ import (
 	"net/http"
 
 	"github.com/pkg/errors"
-	"github.com/sirupsen/logrus"
 )
 
 type Handler struct {
-	Log         logrus.FieldLogger
 	Definitions []ErrorDefinition
 	DefaultCode int
 }
 
 func (h Handler) Handle(w http.ResponseWriter, e error) error {
-	log := h.Log
-	stacks := stacks(e)
-	if len(stacks) > 0 {
-		log = log.WithField("errorStack", stacks[0])
-	}
-	log.WithError(e).Error("Error while processing request")
-
 	responseBody, err := h.ToResponse(e)
 	if err != nil {
 		return err
@@ -33,7 +24,6 @@ func (h Handler) Handle(w http.ResponseWriter, e error) error {
 	if nil != err {
 		return err
 	}
-	log.WithField("headers", w.Header()).Debug("Headers of error response")
 	fmt.Fprintf(w, string(responseBodyJSON))
 	return nil
 }

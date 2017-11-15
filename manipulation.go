@@ -2,22 +2,22 @@ package resterrors
 
 import "github.com/pkg/errors"
 
-type stacktracer interface {
+type Stacktracer interface {
 	StackTrace() errors.StackTrace
 }
 
-type causer interface {
+type Causer interface {
 	Cause() error
 }
 
-func stacks(err error) []errors.StackTrace {
+func Stacks(err error) []errors.StackTrace {
 	var stacktraces []errors.StackTrace
-	errCauser, isCauser := err.(causer)
+	errCauser, isCauser := err.(Causer)
 	if isCauser {
-		stacktraces = stacks(errCauser.Cause())
+		stacktraces = Stacks(errCauser.Cause())
 	}
 
-	stackErr, isStacktacer := err.(stacktracer)
+	stackErr, isStacktacer := err.(Stacktracer)
 	if isStacktacer {
 		stacktraces = append(stacktraces, stackErr.StackTrace())
 	}
@@ -47,7 +47,7 @@ func SearchThroughCauses(e error, isSearched func(error) bool) error {
 		return e
 	}
 
-	errWithCause, isErrWithCause := e.(causer)
+	errWithCause, isErrWithCause := e.(Causer)
 	if !isErrWithCause || nil == errWithCause.Cause() {
 		return nil
 	}

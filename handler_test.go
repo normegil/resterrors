@@ -7,7 +7,6 @@ import (
 	"testing"
 
 	"github.com/pkg/errors"
-	"github.com/sirupsen/logrus"
 )
 
 func TestHandle(t *testing.T) {
@@ -41,7 +40,7 @@ func TestHandle(t *testing.T) {
 		t.Run(testdata.err.Error(), func(t *testing.T) {
 			resp := httptest.NewRecorder()
 
-			Handler{logrus.New(), definitions, defaultCode}.Handle(resp, testdata.err)
+			Handler{definitions, defaultCode}.Handle(resp, testdata.err)
 
 			var expectedErr *ErrorResponse
 			for _, definition := range definitions {
