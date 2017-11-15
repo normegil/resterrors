@@ -2,12 +2,6 @@
 
 
 [[projects]]
-  name = "github.com/julienschmidt/httprouter"
-  packages = ["."]
-  revision = "8c199fb6259ffc1af525cc3ad52ee60ba8359669"
-  version = "v1.1"
-
-[[projects]]
   branch = "master"
   name = "github.com/normegil/formats"
   packages = ["error","time","url"]
@@ -19,27 +13,9 @@
   revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
   version = "v0.8.0"
 
-[[projects]]
-  name = "github.com/sirupsen/logrus"
-  packages = ["."]
-  revision = "f006c2ac4710855cf0f916dd6b77acf6b048dc6e"
-  version = "v1.0.3"
-
-[[projects]]
-  branch = "master"
-  name = "golang.org/x/crypto"
-  packages = ["ssh/terminal"]
-  revision = "6a293f2d4b14b8e6d3f0539e383f6d0d30fce3fd"
-
-[[projects]]
-  branch = "master"
-  name = "golang.org/x/sys"
-  packages = ["unix","windows"]
-  revision = "4b45465282a4624cf39876842a017334f13b8aff"
-
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "50a43eaefcc5a6482c672e935df4db12c87703a049ed8d559e648bd56ce3cde0"
+  inputs-digest = "dd6a1a3364dd2c6ee221fc78865517cbbe662580523a7fdddcda1a4a9bde9519"
   solver-name = "gps-cdcl"
   solver-version = 1
