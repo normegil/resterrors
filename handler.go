@@ -25,6 +25,7 @@ func (h Handler) Handle(w http.ResponseWriter, e error) error {
 		return err
 	}
 	fmt.Fprintf(w, string(responseBodyJSON))
+	w.Header().Set("Content-Type", "application/json")
 	return nil
 }
 
