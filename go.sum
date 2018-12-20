@@ -1,0 +1,8 @@
+github.com/normegil/formats/error v0.0.0-20181220094119-bb749b8206fe h1:UQhsK8LZ78u/8o20LydnrE5AtSS7sHmwlAoBXehx64o=
+github.com/normegil/formats/error v0.0.0-20181220094119-bb749b8206fe/go.mod h1:dBFB34EDMBSJS++MUZJUA5f9rxZ+zmwWoAb9gZDLqzQ=
+github.com/normegil/formats/time v0.0.0-20181220094119-bb749b8206fe h1:leCuffyl3zTH83AGrCuBuWPmcOKZ67VvsRIDEiKo268=
+github.com/normegil/formats/time v0.0.0-20181220094119-bb749b8206fe/go.mod h1:I5EUnzZWK6uczkjbSA3KXOgBHsC407xGcgcBA2ZptrA=
+github.com/normegil/formats/url v0.0.0-20181220094119-bb749b8206fe h1:Byv7ogAAQVomfcxsOLWrjBwTNLzReHtxsSjiY1XoBWM=
+github.com/normegil/formats/url v0.0.0-20181220094119-bb749b8206fe/go.mod h1:lq4PvWXoU9Zf+Luz9trhLluBoclD3qoPMHPUaTOc8Tc=
+github.com/pkg/errors v0.8.0 h1:WdK/asTD0HN+q6hsWO3/vpuAkAr+tw6aNJNDFFf0+qw=
+github.com/pkg/errors v0.8.0/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=

@@ -51,7 +51,7 @@ func TestSearchThroughCauses(t *testing.T) {
 		t.Run("", func(t *testing.T) {
 			found := resterrors.SearchThroughCauses(testdata.Input, testdata.SearchFunction)
 			if testdata.Expected != found {
-				t.Error("Searched error (%+v) was not the found error (%+v)", found, testdata.Expected)
+				t.Errorf("Searched error (%+v) was not the found error (%+v)", found, testdata.Expected)
 			}
 		})
 	}

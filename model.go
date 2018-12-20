@@ -51,23 +51,24 @@ func (d ErrorDefinition) ToResponse(err error) (*ErrorResponse, error) {
 		return nil, errors.Wrapf(err, "Parsing %s as URL", d.MoreInfo)
 	}
 	moreInfo := urlFormat.URL{moreInfoURL}
+	now := time.Now()
 	return &ErrorResponse{
 		HTTPStatus: d.HTTPStatus,
 		Code:       d.Code,
 		Message:    d.Message,
 		MoreInfo:   moreInfo,
-		Time:       timeFormat.Time(time.Now()),
+		Time:       timeFormat.MarshallableTime{&now},
 		Err:        eMarshallable,
 	}, nil
 }
 
 type ErrorResponse struct {
-	HTTPStatus int             `json:"http status"`
-	Code       int             `json:"code"`
-	Message    string          `json:"message"`
-	MoreInfo   urlFormat.URL   `json:"more info"`
-	Time       timeFormat.Time `json:"time"`
-	Err        marshableError  `json:"error"`
+	HTTPStatus int                         `json:"http status"`
+	Code       int                         `json:"code"`
+	Message    string                      `json:"message"`
+	MoreInfo   urlFormat.URL               `json:"more info"`
+	Time       timeFormat.MarshallableTime `json:"time"`
+	Err        marshableError              `json:"error"`
 }
 
 func (e ErrorResponse) String() string {
